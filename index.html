@@ -2,144 +2,492 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Gerador de Sequência CPF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Gerador de Sequência CPF | TERMINAL MODE | FULLSCREEN</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; padding: 40px 20px; background-color: #f0f2f5; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 480px; }
-        
-        .header-container { text-align: center; margin-bottom: 20px; }
-        h3 { color: #1a1a1a; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .subtitle { color: #7f8c8d; font-size: 12px; font-weight: bold; margin-top: 5px; display: block; letter-spacing: 2px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .full-width { grid-column: span 2; }
-        input { padding: 12px; border: 2px solid #e1e4e8; border-radius: 8px; font-size: 16px; text-align: center; outline: none; transition: 0.3s; width: 100%; box-sizing: border-box; }
-        input:focus { border-color: #3498db; background: #f7fbff; }
-        .label-input { font-size: 12px; color: #586069; margin-bottom: 6px; display: block; font-weight: 600; text-transform: uppercase; text-align: center; }
-        
-        #lista-resultados { margin-top: 20px; max-height: 350px; overflow-y: auto; border: 1px solid #e1e4e8; border-radius: 8px; background: #fafbfc; }
-        .item-cpf { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #edf0f2; transition: 0.2s; position: relative; }
-        .item-cpf:hover { background: #fff; }
-        
-        /* Ponto Verde de Copiado */
-        .check-icon { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; position: absolute; left: 4px; display: none; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
-        .item-cpf.copiado .check-icon { display: block; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            overflow: auto;
+        }
 
-        .cpf-texto { font-family: 'Courier New', monospace; font-size: 19px; color: #24292e; letter-spacing: 1px; margin-left: 5px; }
-        .dv { color: #28a745; font-weight: bold; }
-        
-        .btn-gerar { width: 100%; padding: 14px; background: #2ecc71; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
-        .btn-gerar:hover { background: #27ae60; transform: translateY(-1px); }
-        .btn-copy { background: #f1f3f5; border: 1px solid #ced4da; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-size: 12px; transition: 0.2s; min-width: 65px; }
-        .btn-copy:hover { background: #e9ecef; border-color: #adb5bd; }
+        body {
+            background: #0a0c0a;
+            font-family: 'Fira Code', 'Courier New', 'Consolas', 'Monaco', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
 
-        #erro { color: #d73a49; font-size: 13px; text-align: center; margin-top: 10px; min-height: 18px; font-weight: bold; }
+        .card {
+            background-color: #000000;
+            border: 2px solid #1E8A3C;
+            border-radius: 16px;
+            box-shadow: 0 0 18px rgba(0, 255, 0, 0.2), inset 0 0 6px rgba(0, 255, 0, 0.05);
+            width: 100%;
+            height: auto;
+            max-width: 1400px;
+            min-width: 320px;
+            margin: 0 auto;
+            padding: 28px 32px 36px 32px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-container {
+            text-align: center;
+            margin-bottom: 28px;
+            border-bottom: 1.5px dashed #1E8A3C;
+            padding-bottom: 14px;
+        }
+
+        h3 {
+            color: #33FF66;
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            letter-spacing: 2px;
+            font-weight: 550;
+            text-transform: uppercase;
+            text-shadow: 0 0 6px #2EAA4A;
+            margin: 0;
+            font-family: inherit;
+        }
+
+        .subtitle {
+            color: #3BCF6B;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: block;
+            margin-top: 8px;
+            letter-spacing: 2.5px;
+            opacity: 0.9;
+            font-family: monospace;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .label-input {
+            font-size: 12px;
+            color: #26C95A;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        input {
+            background-color: #0F0F0F;
+            border: 1.8px solid #1C6E3A;
+            color: #7CFC00;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            padding: 14px 12px;
+            text-align: center;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.25s ease;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        input:focus {
+            border-color: #2EEA6A;
+            background-color: #0A0F0A;
+            box-shadow: 0 0 8px #1F9E4A;
+            color: #B0FFB0;
+        }
+
+        input::placeholder {
+            color: #2B6E3C;
+            font-family: monospace;
+            opacity: 0.7;
+        }
+
+        .btn-gerar {
+            width: 100%;
+            padding: 16px 12px;
+            background: #0F501F;
+            border: 1.5px solid #00AA3E;
+            color: #D0FFC0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s linear;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 3px 8px rgba(0, 30, 0, 0.6);
+        }
+
+        .btn-gerar:hover {
+            background: #1C6E30;
+            border-color: #6AFF6A;
+            color: #FFFFFF;
+            text-shadow: 0 0 4px #00FF77;
+            transform: scale(1.01);
+            box-shadow: 0 0 14px rgba(60, 255, 80, 0.4);
+        }
+
+        #lista-resultados {
+            margin-top: 28px;
+            max-height: 55vh;
+            min-height: 280px;
+            overflow-y: auto;
+            border: 1.5px solid #1A753A;
+            border-radius: 14px;
+            background: #030503;
+            padding: 4px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #32CD72 #0D2F1A;
+            flex: 1;
+        }
+
+        #lista-resultados::-webkit-scrollbar {
+            width: 8px;
+        }
+        #lista-resultados::-webkit-scrollbar-track {
+            background: #081A0C;
+            border-radius: 10px;
+        }
+        #lista-resultados::-webkit-scrollbar-thumb {
+            background: #269E46;
+            border-radius: 10px;
+        }
+
+        .item-cpf {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #144F24;
+            transition: 0.1s;
+            position: relative;
+            font-family: 'Courier New', monospace;
+        }
+
+        .item-cpf:hover {
+            background: #0C1E12;
+            border-left: 4px solid #28E070;
+        }
+
+        .check-icon {
+            width: 9px;
+            height: 9px;
+            background-color: #2eff7a;
+            border-radius: 50%;
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            box-shadow: 0 0 6px #26FF70;
+        }
+
+        .item-cpf.copiado .check-icon {
+            display: block;
+        }
+
+        .cpf-texto {
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #96FF96;
+            letter-spacing: 0.8px;
+            background: transparent;
+            margin-left: 16px;
+            word-break: keep-all;
+        }
+
+        .dv {
+            color: #2EF75F;
+            font-weight: bold;
+            text-shadow: 0 0 2px #1FAA44;
+        }
+
+        .btn-copy {
+            background: #052010;
+            border: 1.5px solid #248F46;
+            color: #ABFFB0;
+            border-radius: 8px;
+            padding: 7px 16px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.15s;
+            min-width: 95px;
+            letter-spacing: 0.8px;
+        }
+
+        .btn-copy:hover {
+            background: #16662E;
+            border-color: #48FF8C;
+            color: #FFFFCC;
+            box-shadow: 0 0 10px #27E060;
+        }
+
+        #erro {
+            color: #FF5F6D;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 16px;
+            min-height: 28px;
+            font-weight: bold;
+            font-family: monospace;
+            background: #0C0808;
+            border-left: 4px solid #F03A47;
+            padding: 6px;
+            letter-spacing: 0.4px;
+        }
+
+        @media (max-width: 750px) {
+            .card {
+                padding: 20px 22px;
+            }
+            .cpf-texto {
+                font-size: 1rem;
+            }
+            .btn-copy {
+                padding: 5px 12px;
+                font-size: 0.7rem;
+                min-width: 75px;
+            }
+            .grid-inputs {
+                gap: 16px;
+            }
+            h3 {
+                font-size: 1.8rem;
+            }
+            .btn-gerar {
+                font-size: 1rem;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .cpf-texto {
+                font-size: 0.85rem;
+                margin-left: 8px;
+            }
+            .item-cpf {
+                padding: 10px 12px;
+            }
+            .btn-copy {
+                padding: 4px 8px;
+                min-width: 65px;
+                font-size: 0.65rem;
+            }
+            .check-icon {
+                left: 3px;
+                width: 6px;
+                height: 6px;
+            }
+        }
+
+        @media (min-width: 1600px) {
+            .card {
+                max-width: 1600px;
+                padding: 38px 48px;
+            }
+            .cpf-texto {
+                font-size: 1.5rem;
+            }
+            .btn-copy {
+                font-size: 1rem;
+                padding: 8px 22px;
+            }
+            #lista-resultados {
+                max-height: 62vh;
+            }
+        }
     </style>
 </head>
 <body>
-
 <div class="card">
     <div class="header-container">
         <h3>GERADOR CPF</h3>
-        <span class="subtitle">4N0N1M0X</span>
+        <span class="subtitle">[FULLSCREEN TERMINAL] 4N0N1M0X</span>
     </div>
     
     <div class="grid-inputs">
         <div>
-            <input type="text" id="inicio" maxlength="3" placeholder="inicio">
+            <span class="label-input">INICIO (3 díg)</span>
+            <input type="text" id="inicio" maxlength="3" placeholder="000" value="">
         </div>
         <div>
-            <input type="text" id="fim" maxlength="3" placeholder="fim">
+            <span class="label-input">FIM (3 díg)</span>
+            <input type="text" id="fim" maxlength="3" placeholder="000" value="">
         </div>
         <div class="full-width">
-            <span class="label-input">Número Fixo</span>
-            <input type="text" id="corpo" maxlength="6" placeholder="000000">
+            <span class="label-input">NÚMERO FIXO (6 dígitos)</span>
+            <input type="text" id="corpo" maxlength="6" placeholder="000000" value="">
         </div>
     </div>
 
-    <button class="btn-gerar" onclick="gerarSequencia()">GERAR SEQUÊNCIA</button>
+    <button class="btn-gerar" onclick="gerarSequencia()">⟫ GERAR SEQUÊNCIA ⟪</button>
     
     <div id="erro"></div>
-    <div id="lista-resultados"></div>
+    <div id="lista-resultados">
+        <div style="text-align: center; padding: 28px; color: #2C883C; font-size: 14px;">➤ terminal pronto. execute comando ➤</div>
+    </div>
 </div>
 
 <script>
-function calcularDV(num9) {
-    let n = num9.split('').map(Number);
-    let s1 = 0;
-    for (let i = 0; i < 9; i++) s1 += n[i] * (10 - i);
-    let dv1 = (s1 % 11 < 2) ? 0 : 11 - (s1 % 11);
-    
-    let n2 = [...n, dv1];
-    let s2 = 0;
-    for (let i = 0; i < 10; i++) s2 += n2[i] * (11 - i);
-    let dv2 = (s2 % 11 < 2) ? 0 : 11 - (s2 % 11);
-    return `${dv1}${dv2}`;
-}
-
-async function copiarTexto(texto, btn) {
-    try {
-        await navigator.clipboard.writeText(texto);
+    function calcularDV(num9) {
+        let n = num9.split('').map(Number);
+        let s1 = 0;
+        for (let i = 0; i < 9; i++) s1 += n[i] * (10 - i);
+        let dv1 = (s1 % 11 < 2) ? 0 : 11 - (s1 % 11);
         
-        // Adiciona classe "copiado" ao container pai
-        btn.parentElement.classList.add('copiado');
+        let n2 = [...n, dv1];
+        let s2 = 0;
+        for (let i = 0; i < 10; i++) s2 += n2[i] * (11 - i);
+        let dv2 = (s2 % 11 < 2) ? 0 : 11 - (s2 % 11);
+        return `${dv1}${dv2}`;
+    }
+
+    async function copiarTexto(texto, btn) {
+        try {
+            await navigator.clipboard.writeText(texto);
+            
+            const itemPai = btn.parentElement;
+            if (itemPai) {
+                itemPai.classList.add('copiado');
+            }
+            
+            const originalText = btn.innerText;
+            btn.innerText = "✓ COPIADO";
+            btn.style.background = "#196F36";
+            btn.style.borderColor = "#7AFF90";
+            btn.style.color = "#E0FFE0";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "#052010";
+                btn.style.borderColor = "#248F46";
+                btn.style.color = "#ABFFB0";
+            }, 950);
+        } catch (err) {
+            console.warn("Erro na cópia: ", err);
+            btn.innerText = "ERRO";
+            setTimeout(() => {
+                btn.innerText = "Copiar";
+            }, 800);
+        }
+    }
+
+    function gerarSequencia() {
+        const listaDiv = document.getElementById('lista-resultados');
+        const erroDiv = document.getElementById('erro');
         
-        const originalText = btn.innerText;
-        btn.innerText = "OK!";
-        btn.style.background = "#d4edda";
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.background = "#f1f3f5";
-        }, 800);
-    } catch (err) {
-        console.error("Erro ao copiar");
+        const corpoRaw = document.getElementById('corpo').value.trim();
+        let inicioVal = document.getElementById('inicio').value.trim();
+        let fimVal = document.getElementById('fim').value.trim();
+        
+        listaDiv.innerHTML = "";
+        erroDiv.innerText = "";
+        
+        if (corpoRaw.length !== 6 || !/^\d{6}$/.test(corpoRaw)) {
+            erroDiv.innerText = "ERRO: O Número Fixo deve ter 6 dígitos.";
+            listaDiv.innerHTML = '<div style="text-align: center; padding: 28px; color: #3AA55A;">⚠ comando inválido — use 6 números ⚠</div>';
+            return;
+        }
+        
+        let inicio = parseInt(inicioVal, 10);
+        let fim = parseInt(fimVal, 10);
+        
+        if (isNaN(inicio)) inicio = 0;
+        if (isNaN(fim)) fim = 0;
+        
+        if (inicio > fim) {
+            erroDiv.innerText = "Início não pode ser maior que o fim.";
+            listaDiv.innerHTML = '<div style="text-align: center; padding: 28px; color: #CB6E6E;">⟳ intervalo inválido</div>';
+            return;
+        }
+        
+        if (inicio < 0 || fim < 0) {
+            erroDiv.innerText = "ERRO: Valores negativos não são permitidos.";
+            listaDiv.innerHTML = '<div style="text-align: center; padding: 28px; color: #4BB86B;">✗ use valores entre 000 e 999</div>';
+            return;
+        }
+        
+        if (inicio > 999 || fim > 999) {
+            erroDiv.innerText = "ERRO: Os limites devem estar entre 0 e 999 (3 dígitos).";
+            listaDiv.innerHTML = '<div style="text-align: center; padding: 28px; color: #C17045;">⛔ intervalo máximo 999</div>';
+            return;
+        }
+        
+        let qtdGerados = 0;
+        for (let i = inicio; i <= fim; i++) {
+            let prefixo = i.toString().padStart(3, '0');
+            let num9 = prefixo + corpoRaw;
+            let dv = calcularDV(num9);
+            let cpfLimpo = `${prefixo}${corpoRaw}${dv}`;
+            
+            let corpoParte1 = corpoRaw.substring(0, 3);
+            let corpoParte2 = corpoRaw.substring(3, 6);
+            let cpfFormatado = `${prefixo}.${corpoParte1}.${corpoParte2}-${dv}`;
+            
+            let item = document.createElement('div');
+            item.className = 'item-cpf';
+            item.innerHTML = `
+                <div class="check-icon"></div>
+                <span class="cpf-texto">${cpfFormatado}</span>
+                <button class="btn-copy" onclick="copiarTexto('${cpfLimpo}', this)">[Copiar]</button>
+            `;
+            listaDiv.appendChild(item);
+            qtdGerados++;
+        }
+        
+        if (qtdGerados === 0) {
+            listaDiv.innerHTML = '<div style="text-align: center; padding: 28px; color: #238F48;">$ Nenhum CPF gerado. Intervalo vazio.</div>';
+        } else {
+            let counterMsg = document.createElement('div');
+            counterMsg.style.textAlign = 'center';
+            counterMsg.style.fontSize = '13px';
+            counterMsg.style.padding = '12px';
+            counterMsg.style.borderTop = '1.5px solid #1A6F34';
+            counterMsg.style.color = '#82D482';
+            counterMsg.style.fontFamily = 'monospace';
+            counterMsg.style.fontWeight = 'bold';
+            counterMsg.innerText = `> gerados ${qtdGerados} CPF(s) » faixa ${inicio.toString().padStart(3,'0')} .. ${fim.toString().padStart(3,'0')}  |  corpo fixo: ${corpoRaw}`;
+            listaDiv.appendChild(counterMsg);
+        }
+        
+        if (listaDiv.children.length > 0) {
+            listaDiv.scrollTop = 0;
+        }
     }
-}
-
-function gerarSequencia() {
-    const listaDiv = document.getElementById('lista-resultados');
-    const erroDiv = document.getElementById('erro');
-    const corpo = document.getElementById('corpo').value;
     
-    let inicioVal = document.getElementById('inicio').value;
-    let fimVal = document.getElementById('fim').value;
-
-    let inicio = parseInt(inicioVal);
-    if (isNaN(inicio)) inicio = 0;
-    
-    let fim = parseInt(fimVal);
-    if (isNaN(fim)) fim = 0;
-
-    listaDiv.innerHTML = "";
-    erroDiv.innerText = "";
-
-    if (corpo.length !== 6 || isNaN(corpo)) {
-        erroDiv.innerText = "O Número Fixo deve ter 6 dígitos.";
-        return;
-    }
-
-    if (inicio > fim) {
-        erroDiv.innerText = "Início não pode ser maior que o fim.";
-        return;
-    }
-
-    for (let i = inicio; i <= fim; i++) {
-        let p = i.toString().padStart(3, '0');
-        let num9 = p + corpo;
-        let dv = calcularDV(num9);
-        let cpfLimpo = `${p}${corpo}${dv}`;
-
-        let item = document.createElement('div');
-        item.className = 'item-cpf';
-        item.innerHTML = `
-            <div class="check-icon"></div>
-            <span class="cpf-texto">${p}.${corpo.substring(0,3)}.${corpo.substring(3,6)}-<span class="dv">${dv}</span></span>
-            <button class="btn-copy" onclick="copiarTexto('${cpfLimpo}', this)">Copiar</button>
-        `;
-        listaDiv.appendChild(item);
-    }
-}
+    window.addEventListener('DOMContentLoaded', () => {
+        // Não faz nada automaticamente - campos vazios com placeholders
+        document.getElementById('lista-resultados').innerHTML = '<div style="text-align: center; padding: 28px; color: #2C883C; font-size: 14px;">➤ preencha os campos e clique em GERAR ➤</div>';
+    });
 </script>
-
 </body>
 </html>
